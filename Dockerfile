@@ -16,24 +16,24 @@ RUN apk add mitmproxy | true # optional (3.21+)
 RUN echo "net.ipv6.conf.all.disable_ipv6 = 1" > /etc/sysctl.conf
 
 # sentry-dotnet
-# RUN apk add grpc-plugins openjdk11 powershell
-# ENV PROTOBUF_PROTOC=/usr/bin/protoc
-# ENV GRPC_PROTOC_PLUGIN=/usr/bin/grpc_csharp_plugin
-# # mono only exists in alpine:edge (3.22+)
-# COPY aports /aports
-# RUN if ! apk add mono; then \
-#     apk add alpine-sdk abuild && \
-#     adduser root abuild && \
-#     mkdir -p ~/packages && \
-#     abuild-keygen -ain && \
-#     cd /aports/community/mono && \
-#     abuild -rF && \
-#     apk add --allow-untrusted ~/packages/community/x86_64/mono-6*.apk && \
-#     apk del alpine-sdk abuild && \
-#     rm -rf ~/packages; \
-#   fi
-# RUN mono --version
-# RUN rm -rf /aports
+RUN apk add grpc-plugins openjdk11 powershell
+ENV PROTOBUF_PROTOC=/usr/bin/protoc
+ENV GRPC_PROTOC_PLUGIN=/usr/bin/grpc_csharp_plugin
+# mono only exists in alpine:edge (3.22+)
+COPY aports /aports
+RUN if ! apk add mono; then \
+    apk add alpine-sdk abuild && \
+    adduser root abuild && \
+    mkdir -p ~/packages && \
+    abuild-keygen -ain && \
+    cd /aports/community/mono && \
+    abuild -rF && \
+    apk add --allow-untrusted ~/packages/community/x86_64/mono-6*.apk && \
+    apk del alpine-sdk abuild && \
+    rm -rf ~/packages; \
+  fi
+RUN mono --version
+RUN rm -rf /aports
 
 # runner
 RUN addgroup runner
