@@ -5,6 +5,7 @@ on:
 
 jobs:
   build:
+    name: ${{ matrix.tag || matrix.base }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -13,10 +14,10 @@ jobs:
           - base: 'alpine:3.19'
           - base: 'alpine:3.21'
           - base: 'alpine:edge'
-          - tag: 'alpine:dotnet-8.0'
-            base: 'mcr.microsoft.com/dotnet/sdk:8.0-alpine'
-          - tag: 'alpine:dotnet-9.0'
-            base: 'mcr.microsoft.com/dotnet/sdk:9.0-alpine'
+          - base: 'mcr.microsoft.com/dotnet/sdk:8.0-alpine'
+            tag: 'alpine:dotnet-8.0'
+          - base: 'mcr.microsoft.com/dotnet/sdk:9.0-alpine'
+            tag: 'alpine:dotnet-9.0'
 
     permissions:
       contents: read
@@ -32,8 +33,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: |
-          docker build --build-arg BASE=${{ matrix.base }} -t ghcr.io/${{ github.repository_owner }}/${{ matrix.tag || matrix.base }} .
+      - name: Run docker build
+        run: docker build --build-arg BASE=${{ matrix.base }} -t ghcr.io/${{ github.repository_owner }}/${{ matrix.tag || matrix.base }} .
 
-      - run: |
-          docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.tag || matrix.base }}
+      - name: Run docker push
+        run: docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.tag || matrix.base }}
