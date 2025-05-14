@@ -1,0 +1,39 @@
+name: Build Docker images
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - base: 'alpine:3.19'
+          - base: 'alpine:3.21'
+          - base: 'alpine:edge'
+          - base: 'mcr.microsoft.com/dotnet/sdk:8.0-alpine'
+            tag: 'alpine:dotnet-8.0'
+          - base: 'mcr.microsoft.com/dotnet/sdk:9.0-alpine'
+            tag: 'alpine:dotnet-9.0'
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: |
+          docker build --build-arg BASE=${{ matrix.base }} -t ghcr.io/${{ github.repository_owner }}/${{ matrix.tag || matrix.base }} .
+
+      - run: |
+          docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.tag || matrix.base }}
