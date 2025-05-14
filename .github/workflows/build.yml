@@ -2,6 +2,17 @@ name: Build Docker images
 
 on:
   workflow_dispatch:
+    inputs:
+      image:
+        description: 'Which image(s) to build?'
+        required: false
+        type: choice
+        options:
+          - all
+          - '["alpine:3.19"]'
+          - '["alpine:3.21"]'
+          - '["alpine:edge"]'
+        default: 'all'
 
 jobs:
   build:
@@ -10,10 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base:
-        - alpine:3.19
-        - alpine:3.21
-        - alpine:edge
+        base: ${{ inputs.image == 'all' && fromJSON('["alpine:3.19", "alpine:3.21", "alpine:edge"]') || fromJSON(inputs.image) }}
 
     permissions:
       contents: read
