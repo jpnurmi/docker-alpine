@@ -8,8 +8,6 @@ RUN apk update
 RUN apk add bash build-base clang cmake curl git icu lsb-release-minimal perl python3 sudo tar wget
 
 # dotnet
-RUN mkdir -p /usr/share/dotnet
-RUN chmod 777 /usr/share/dotnet
 RUN curl -sSL --retry 5 https://dot.net/v1/dotnet-install.sh | sudo bash -eo pipefail /dev/stdin --channel 8.0 --install-dir /usr/share/dotnet
 RUN curl -sSL --retry 5 https://dot.net/v1/dotnet-install.sh | sudo bash -eo pipefail /dev/stdin --version 9.0.203 --install-dir /usr/share/dotnet
 RUN ln -s /usr/share/dotnet/dotnet /usr/local/bin/dotnet
@@ -49,3 +47,7 @@ RUN chmod 0440 /etc/sudoers.d/runner
 USER runner
 WORKDIR /__w
 ENTRYPOINT ["/bin/bash"]
+
+# system
+RUN chmod -R 777 /opt
+RUN chmod -R 777 /usr/share
