@@ -8,7 +8,7 @@ RUN apk update
 RUN apk add bash build-base cargo clang cmake curl git icu perl python3 sudo tar wget
 
 # sentry-native
-RUN apk add bash libunwind-dev libunwind-static linux-headers mitmproxy python3-dev xz-dev
+RUN apk add bash libunwind-dev libunwind-static linux-headers python3-dev xz-dev
 
 # sentry-dotnet
 # RUN apk add grpc-plugins openjdk11 powershell
