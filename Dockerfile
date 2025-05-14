@@ -10,12 +10,10 @@ RUN apk add bash build-base clang cmake curl git icu lsb-release-minimal perl py
 # sentry-native
 RUN apk add bash cargo curl-dev libunwind-dev libunwind-static linux-headers openssl-dev python3-dev zlib-dev xz-dev
 RUN apk add mitmproxy | true # optional (3.21+)
-# comment out "::1 localhost ..." to avoid conflicts with proxy tests
-# RUN sed '/^::1/ s/^/#/' /etc/hosts > /tmp/hosts && mv /tmp/hosts /etc/hosts
-# RUN sed -i '/^::1/ s/^/#/' /etc/hosts
-RUN echo "net.ipv6.conf.all.disable_ipv6 = 1" > /etc/sysctl.conf
 
 # sentry-dotnet
+RUN mkdir -p /usr/share/dotnet
+RUN chmod 777 /usr/share/dotnet
 RUN apk add grpc-plugins openjdk11 powershell
 ENV PROTOBUF_PROTOC=/usr/bin/protoc
 ENV GRPC_PROTOC_PLUGIN=/usr/bin/grpc_csharp_plugin
