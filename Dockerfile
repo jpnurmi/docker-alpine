@@ -5,7 +5,7 @@ FROM ${BASE}
 
 # common
 RUN apk update
-RUN apk add bash build-base cargo clang cmake curl git icu perl python3 sudo tar wget
+RUN apk add bash build-base cargo clang cmake curl git icu lsb-release-minimal perl python3 sudo tar wget
 
 # sentry-native
 RUN apk add bash libunwind-dev libunwind-static linux-headers python3-dev xz-dev
@@ -38,4 +38,5 @@ RUN chown -R runner:runner /home/runner /__e /__w
 RUN echo "runner ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/runner
 RUN chmod 0440 /etc/sudoers.d/runner
 USER runner
-WORKDIR /home/runner
+WORKDIR /__w
+ENTRYPOINT ["/bin/bash"]
