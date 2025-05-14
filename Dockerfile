@@ -10,9 +10,10 @@ RUN apk add bash build-base clang cmake curl git icu lsb-release-minimal perl py
 # sentry-native
 RUN apk add bash cargo curl-dev libunwind-dev libunwind-static linux-headers openssl-dev python3-dev zlib-dev xz-dev
 RUN apk add mitmproxy | true # optional (3.21+)
+RUN curl -sSL --retry 5 https://dot.net/v1/dotnet-install.sh | bash -eo pipefail /dev/stdin --channel 8.0 --install-dir /usr/share/dotnet
+RUN ln -s /usr/share/dotnet/dotnet /usr/local/bin/dotnet
 
 # sentry-dotnet
-RUN mkdir -p /usr/share/dotnet
 RUN chmod 777 /usr/share/dotnet
 RUN apk add grpc-plugins openjdk11 powershell
 ENV PROTOBUF_PROTOC=/usr/bin/protoc
