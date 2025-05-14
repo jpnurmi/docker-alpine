@@ -17,13 +17,14 @@ ENV GRPC_PROTOC_PLUGIN=/usr/bin/grpc_csharp_plugin
 # mono only exists in alpine:edge (3.22+)
 COPY aports /aports
 RUN if ! apk add mono; then \
-    apk add alpine-sdk abuild; \
-    adduser root abuild; \
-    mkdir -p ~/packages; \
-    abuild-keygen -ain; \
-    abuild -C /aports/community/mono -rF; \
-    apk add --allow-untrusted ~/packages/community/x86_64/mono-6*.apk; \
-    apk del alpine-sdk abuild; \
+    apk add alpine-sdk abuild && \
+    adduser root abuild && \
+    mkdir -p ~/packages && \
+    abuild-keygen -ain && \
+    cd /aports/community/mono && \
+    abuild -rF && \
+    apk add --allow-untrusted ~/packages/community/x86_64/mono-6*.apk && \
+    apk del alpine-sdk abuild && \
     rm -rf ~/packages; \
   fi
 RUN mono --version
