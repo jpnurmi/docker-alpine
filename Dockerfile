@@ -41,9 +41,9 @@ RUN rm -rf /aports
 
 # runner
 RUN addgroup runner
-RUN adduser -S -u 1001 -G runner runner
-RUN mkdir -p /__w /__e
-RUN chown -R runner:runner /__w /__e
+RUN adduser -S -u 1001 -h /home/runner -G runner runner
+RUN mkdir -p /home/runner /__e /__w /__w/_temp /__w/_actions /__w/_tool
+RUN chown -R runner:runner /home/runner /__e /__w
 RUN echo "runner ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/runner
 RUN chmod 0440 /etc/sudoers.d/runner
 USER runner
