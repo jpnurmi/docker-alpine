@@ -37,6 +37,10 @@ RUN if ! apk add mono; then \
 RUN mono --version
 RUN rm -rf /aports
 
+# system
+RUN chmod -R 777 /opt
+RUN chmod -R 777 /usr/share
+
 # runner
 RUN addgroup runner
 RUN adduser -S -u 1001 -h /home/runner -G runner runner
@@ -47,7 +51,3 @@ RUN chmod 0440 /etc/sudoers.d/runner
 USER runner
 WORKDIR /__w
 ENTRYPOINT ["/bin/bash"]
-
-# system
-RUN chmod -R 777 /opt
-RUN chmod -R 777 /usr/share
