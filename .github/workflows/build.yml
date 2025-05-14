@@ -21,12 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - base: ${{ inputs.image == 'all' && 'alpine:3.19' || inputs.image }}
-          - base: ${{ inputs.image == 'all' && 'alpine:3.21' || 'none' }}
-          - base: ${{ inputs.image == 'all' && 'alpine:edge' || 'none' }}
-        exclude:
-          - base: 'none'
+        base: ${{ fromJSON(inputs.image == 'all' && '["alpine:3.19", "alpine:3.21", "alpine:edge"]' || format('[ "%s" ]', inputs.image)) }}
 
     permissions:
       contents: read
