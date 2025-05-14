@@ -7,9 +7,11 @@ FROM ${BASE}
 RUN apk update
 RUN apk add bash build-base clang cmake curl git icu lsb-release-minimal perl python3 sudo tar wget
 
-# setup-dotnet
+# dotnet
 RUN mkdir -p /usr/share/dotnet
 RUN chmod 777 /usr/share/dotnet
+RUN curl -sSL --retry 5 https://dot.net/v1/dotnet-install.sh | sudo bash -eo pipefail /dev/stdin --channel 8.0 --install-dir /usr/share/dotnet
+RUN curl -sSL --retry 5 https://dot.net/v1/dotnet-install.sh | sudo bash -eo pipefail /dev/stdin --version 9.0.203 --install-dir /usr/share/dotnet
 
 # sentry-native
 RUN apk add bash cargo curl-dev libunwind-dev libunwind-static linux-headers openssl-dev python3-dev zlib-dev xz-dev
