@@ -13,10 +13,10 @@ jobs:
           - base: 'alpine:3.19'
           - base: 'alpine:3.21'
           - base: 'alpine:edge'
-          - base: 'mcr.microsoft.com/dotnet/sdk:8.0-alpine'
-            tag: 'alpine:dotnet-8.0'
-          - base: 'mcr.microsoft.com/dotnet/sdk:9.0-alpine'
-            tag: 'alpine:dotnet-9.0'
+          - tag: 'alpine:dotnet-8.0'
+            base: 'mcr.microsoft.com/dotnet/sdk:8.0-alpine'
+          - tag: 'alpine:dotnet-9.0'
+            base: 'mcr.microsoft.com/dotnet/sdk:9.0-alpine'
 
     permissions:
       contents: read
