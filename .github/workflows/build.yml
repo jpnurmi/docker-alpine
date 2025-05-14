@@ -2,22 +2,31 @@ name: Build Docker images
 
 on:
   workflow_dispatch:
+    inputs:
+      image:
+        description: 'Which image(s) to build?'
+        required: false
+        type: choice
+        options:
+          - all
+          - alpine:3.19
+          - alpine:3.21
+          - alpine:edge
+        default: 'all'
 
 jobs:
   build:
-    name: ${{ matrix.tag || matrix.base }}
+    name: ${{ matrix.base }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - base: 'alpine:3.19'
-          - base: 'alpine:3.21'
-          - base: 'alpine:edge'
-          #- base: 'mcr.microsoft.com/dotnet/sdk:8.0-alpine'
-          #  tag: 'alpine:dotnet-8.0'
-          #- base: 'mcr.microsoft.com/dotnet/sdk:9.0-alpine'
-          #  tag: 'alpine:dotnet-9.0'
+          - base: ${{ inputs.image == 'all' && 'alpine:3.19' || inputs.image }}
+          - base: ${{ inputs.image == 'all' && 'alpine:3.21' || '' }}
+          - base: ${{ inputs.image == 'all' && 'alpine:edge' || '' }}
+        exclude:
+          - base: ''
 
     permissions:
       contents: read
@@ -34,7 +43,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run docker build
-        run: docker build --build-arg BASE=${{ matrix.base }} -t ghcr.io/${{ github.repository_owner }}/${{ matrix.tag || matrix.base }} .
+        run: docker build --build-arg BASE=${{ matrix.base }} -t ghcr.io/${{ github.repository_owner }}/${{ matrix.base }} .
 
       - name: Run docker push
-        run: docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.tag || matrix.base }}
+        run: docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.base }}
