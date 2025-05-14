@@ -32,7 +32,7 @@ RUN apk add bash libunwind-dev libunwind-static linux-headers python3-dev xz-dev
 
 # runner
 RUN addgroup runner
-RUN adduser -S -h /home/runner -G runner runner
+RUN adduser -S -u 1001 -h /home/runner -G runner runner
 RUN mkdir -p /home/runner/work /__e /__w/_temp /__w/_actions /__w/_tool
 RUN chown -R runner:runner /home/runner /__e /__w
 RUN echo "runner ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/runner
