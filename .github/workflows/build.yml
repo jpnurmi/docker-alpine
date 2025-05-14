@@ -23,10 +23,10 @@ jobs:
       matrix:
         include:
           - base: ${{ inputs.image == 'all' && 'alpine:3.19' || inputs.image }}
-          - base: ${{ inputs.image == 'all' && 'alpine:3.21' || '' }}
-          - base: ${{ inputs.image == 'all' && 'alpine:edge' || '' }}
+          - base: ${{ inputs.image == 'all' && 'alpine:3.21' || 'none' }}
+          - base: ${{ inputs.image == 'all' && 'alpine:edge' || 'none' }}
         exclude:
-          - base: ''
+          - base: 'none'
 
     permissions:
       contents: read
