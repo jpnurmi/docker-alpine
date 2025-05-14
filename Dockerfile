@@ -8,7 +8,7 @@ RUN apk update
 RUN apk add bash build-base cargo clang cmake curl git icu lsb-release-minimal perl python3 sudo tar wget
 
 # sentry-native
-RUN apk add bash libunwind-dev libunwind-static linux-headers python3-dev xz-dev
+RUN apk add bash curl-dev libunwind-dev libunwind-static linux-headers openssl-dev python3-dev zlib-dev xz-dev
 
 # sentry-dotnet
 # RUN apk add grpc-plugins openjdk11 powershell
@@ -33,7 +33,8 @@ RUN apk add bash libunwind-dev libunwind-static linux-headers python3-dev xz-dev
 # runner
 RUN addgroup runner
 RUN adduser -S -u 1001 -h /home/runner -G runner runner
-RUN mkdir -p /home/runner/work /__e /__w/_temp /__w/_actions /__w/_tool
+# /__w/_temp /__w/_actions /__w/_tool
+RUN mkdir -p /home/runner/work /__e /__w
 RUN chown -R runner:runner /home/runner /__e /__w
 RUN echo "runner ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/runner
 RUN chmod 0440 /etc/sudoers.d/runner
