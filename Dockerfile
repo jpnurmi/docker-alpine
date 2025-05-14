@@ -8,7 +8,8 @@ RUN apk update
 RUN apk add bash build-base clang cmake curl git icu lsb-release-minimal perl python3 sudo tar wget
 
 # sentry-native
-RUN apk add bash cargo curl-dev libunwind-dev libunwind-static linux-headers mitmproxy moreutils openssl-dev python3-dev zlib-dev xz-dev
+RUN apk add bash cargo curl-dev libunwind-dev libunwind-static linux-headers moreutils openssl-dev python3-dev zlib-dev xz-dev
+RUN apk add mitmproxy | true # optional (3.21+)
 # comment out "::1 localhost ..." to avoid conflicts with proxy tests
 RUN sed '/^::1/ s/^/#/' /etc/hosts | sponge /etc/hosts
 
