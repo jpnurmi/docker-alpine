@@ -1,18 +1,7 @@
-name: Build Docker images
+name: Build Alpine images
 
 on:
   workflow_dispatch:
-    inputs:
-      image:
-        description: 'Which image(s) to build?'
-        required: false
-        type: choice
-        options:
-          - all
-          - '["alpine:3.19"]'
-          - '["alpine:3.21"]'
-          - '["alpine:edge"]'
-        default: 'all'
 
 jobs:
   build:
@@ -21,7 +10,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base: ${{ inputs.image == 'all' && fromJSON('["alpine:3.19", "alpine:3.21", "alpine:edge"]') || fromJSON(inputs.image) }}
+        version:
+          - '3.19'
+          - '3.21'
+          - 'edge'
 
     permissions:
       contents: read
@@ -37,8 +29,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run docker build
-        run: docker build --build-arg BASE=${{ matrix.base }} -t ghcr.io/${{ github.repository_owner }}/${{ matrix.base }} .
+      - name: Build alpine:mono-${{ matrix.version }}
+        run: |
+          if ! docker pull ghcr.io/${{ github.repository_owner }}/alpine:mono-${{ matrix.version }}; then \
+            docker build --build-arg BASE=alpine:${{ matrix.version }} -t ghcr.io/${{ github.repository_owner }}/alpine:mono-${{ matrix.version }} . \
+            docker push ghcr.io/${{ github.repository_owner }}/alpine:mono-${{ matrix.version }} \
+          fi
+        working-directory: mono
 
-      - name: Run docker push
-        run: docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.base }}
+      - name: Build alpine:sentry-${{ matrix.version }}
+        run: |
+          docker build --build-arg BASE=alpine:${{ matrix.version }} -t ghcr.io/${{ github.repository_owner }}/alpine:sentry-${{ matrix.version }} .
+          docker push ghcr.io/${{ github.repository_owner }}/alpine:sentry-${{ matrix.version }}
+        working-directory: sentry
