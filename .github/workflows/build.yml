@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.base }}
+    name: alpine:${{ matrix.version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
