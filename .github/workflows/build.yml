@@ -30,14 +30,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build alpine:mono-${{ matrix.version }}
+        shell: bash
         run: |
           if ! docker pull ghcr.io/${{ github.repository_owner }}/alpine:mono-${{ matrix.version }}; then \
-            docker build --build-arg BASE=alpine:${{ matrix.version }} -t ghcr.io/${{ github.repository_owner }}/alpine:mono-${{ matrix.version }} . \
+            docker build --build-arg BASE=alpine:${{ matrix.version }} -t ghcr.io/${{ github.repository_owner }}/alpine:mono-${{ matrix.version }} . && \
             docker push ghcr.io/${{ github.repository_owner }}/alpine:mono-${{ matrix.version }} \
           fi
         working-directory: mono
 
       - name: Build alpine:sentry-${{ matrix.version }}
+        shell: bash
         run: |
           docker build --build-arg BASE=alpine:${{ matrix.version }} -t ghcr.io/${{ github.repository_owner }}/alpine:sentry-${{ matrix.version }} .
           docker push ghcr.io/${{ github.repository_owner }}/alpine:sentry-${{ matrix.version }}
