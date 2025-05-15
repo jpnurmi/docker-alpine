@@ -7,7 +7,7 @@ COPY aports /aports
 
 # mono only exists in alpine:edge (3.22+)
 RUN if ! apk add mono; then \
-    apk add --no-cache alpine-sdk abuild && \
+    apk add --no-cache alpine-sdk abuild doas && \
     adduser root abuild && \
     mkdir -p ~/packages && \
     abuild-keygen -ain && \
