@@ -13,7 +13,7 @@ RUN if ! apk add mono; then \
     abuild-keygen -ain && \
     cd /aports && \
     abuild -rF && \
-    apk add --allow-untrusted ~/packages/community/x86_64/mono-6*.apk && \
+    apk add --allow-untrusted ~/packages/$(uname -m)/mono-6.14.1-r0.apk && \
     apk del alpine-sdk abuild && \
     rm -rf ~/packages ~/.abuild; \
   fi
