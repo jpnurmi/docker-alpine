@@ -4,6 +4,8 @@ FROM ${BASE}
 
 RUN apk update
 COPY aports ~/aports
+
+# mono only exists in alpine:edge (3.22+)
 RUN if ! apk add mono; then \
     apk add --no-cache alpine-sdk abuild && \
     adduser root abuild && \
@@ -15,5 +17,6 @@ RUN if ! apk add mono; then \
     apk del alpine-sdk abuild && \
     rm -rf ~/packages; ~/.abuild; \
   fi
+
 RUN rm -rf ~/aports
 RUN mono --version
