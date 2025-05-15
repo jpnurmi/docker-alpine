@@ -5,8 +5,6 @@ FROM ${BASE}
 # common
 RUN apk update
 RUN apk add bash build-base clang cmake curl git icu lsb-release-minimal perl python3 sudo tar wget
-
-# dotnet
 RUN curl -sSL --retry 5 https://dot.net/v1/dotnet-install.sh | sudo bash -eo pipefail /dev/stdin --channel 8.0 --install-dir /usr/share/dotnet
 RUN ln -s /usr/share/dotnet/dotnet /usr/local/bin/dotnet
 
@@ -20,10 +18,6 @@ ENV PROTOBUF_PROTOC=/usr/bin/protoc
 ENV GRPC_PROTOC_PLUGIN=/usr/bin/grpc_csharp_plugin
 RUN pwsh -Command Install-Module Pester -Scope AllUsers -Force | true # optional (3.21+)
 
-# system
-RUN chmod -R 777 /opt
-RUN chmod -R 777 /usr/share
-
 # runner
 RUN addgroup runner
 RUN adduser -S -u 1001 -h /home/runner -G runner runner
@@ -32,6 +26,8 @@ RUN chown -R runner:runner /home/runner /__e /__w
 RUN ln -s /__w /home/runner/work
 RUN echo "runner ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/runner
 RUN chmod 0440 /etc/sudoers.d/runner
+RUN chmod -R 777 /opt
+RUN chmod -R 777 /usr/share
 USER runner
 WORKDIR /__w
 ENTRYPOINT ["/bin/bash"]
