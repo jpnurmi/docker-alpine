@@ -13,7 +13,7 @@ RUN if ! apk add mono; then \
     abuild -rF && \
     apk add --allow-untrusted ~/packages/community/x86_64/mono-6*.apk && \
     apk del alpine-sdk abuild && \
-    rm -rf ~/packages; ~/.abuild \
+    rm -rf ~/packages; ~/.abuild; \
   fi
 RUN rm -rf ~/aports
 RUN mono --version
