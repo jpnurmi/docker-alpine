@@ -7,7 +7,7 @@ COPY aports /aports
 
 # mono only exists in alpine:edge (3.22+)
 RUN if ! apk add mono; then \
-    apk add --no-cache alpine-sdk abuild doas && \
+    apk add --no-cache alpine-sdk abuild sudo && \
     adduser root abuild && \
     mkdir -p ~/packages && \
     abuild-keygen -ain && \
@@ -15,7 +15,7 @@ RUN if ! apk add mono; then \
     abuild -rF && \
     apk add --allow-untrusted ~/packages/community/x86_64/mono-6*.apk && \
     apk del alpine-sdk abuild && \
-    rm -rf ~/packages; ~/.abuild; \
+    rm -rf ~/packages ~/.abuild; \
   fi
 
 RUN rm -rf /aports
