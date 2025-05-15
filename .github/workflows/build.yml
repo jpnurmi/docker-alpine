@@ -40,6 +40,6 @@ jobs:
 
       - name: Build alpine:sentry-${{ matrix.version }}
         run: |
-          docker build --build-arg BASE=alpine:${{ matrix.version }} -t ghcr.io/${{ github.repository_owner }}/alpine:sentry-${{ matrix.version }} .
+          docker build --build-arg BASE=ghcr.io/${{ github.repository_owner }}/alpine:mono-${{ matrix.version }} -t ghcr.io/${{ github.repository_owner }}/alpine:sentry-${{ matrix.version }} .
           docker push ghcr.io/${{ github.repository_owner }}/alpine:sentry-${{ matrix.version }}
         working-directory: sentry
