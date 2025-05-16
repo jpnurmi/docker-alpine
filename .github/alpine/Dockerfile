@@ -20,7 +20,7 @@ RUN if ! apk add mono; then \
 RUN mono --version
 
 # sentry-native
-RUN apk add bash cargo curl-dev libunwind-dev libunwind-static linux-headers openssl-dev python3-dev zlib-dev xz-dev
+RUN apk add cargo curl-dev libunwind-dev libunwind-static linux-headers openssl-dev python3-dev zlib-dev xz-dev
 RUN apk add mitmproxy || true # optional (3.21+)
 
 # sentry-dotnet
