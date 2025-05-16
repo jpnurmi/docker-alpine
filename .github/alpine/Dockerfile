@@ -8,7 +8,7 @@ RUN apk add bash build-base clang cmake curl git icu lsb-release-minimal perl py
 RUN curl -sSL --retry 5 https://dot.net/v1/dotnet-install.sh | sudo bash -eo pipefail /dev/stdin --channel 8.0 --install-dir /usr/share/dotnet
 RUN ln -s /usr/share/dotnet/dotnet /usr/local/bin/dotnet
 
-# mono only exists in alpine:edge (3.22+)
+# mono (3.22+)
 RUN if ! apk add mono; then \
     sed -i.bak 's|/v3\.[0-9]\+|/edge|g' /etc/apk/repositories && \
     cat /etc/apk/repositories && \
