@@ -2,9 +2,9 @@ name: Build Alpine Linux Docker images
 
 on:
   workflow_dispatch:
-push:
-  paths:
-    - '.github/alpine/*'
+  push:
+    paths:
+      - '.github/alpine'
 
 jobs:
   build:
