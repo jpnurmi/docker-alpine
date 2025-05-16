@@ -21,13 +21,13 @@ RUN mono --version
 
 # sentry-native
 RUN apk add bash cargo curl-dev libunwind-dev libunwind-static linux-headers openssl-dev python3-dev zlib-dev xz-dev
-RUN apk add mitmproxy | true # optional (3.21+)
+RUN apk add mitmproxy || true # optional (3.21+)
 
 # sentry-dotnet
 RUN apk add grpc-plugins openjdk11 powershell
 ENV PROTOBUF_PROTOC=/usr/bin/protoc
 ENV GRPC_PROTOC_PLUGIN=/usr/bin/grpc_csharp_plugin
-RUN pwsh -Command Install-Module Pester -Scope AllUsers -Force | true # optional (3.21+)
+RUN pwsh -Command Install-Module Pester -Scope AllUsers -Force || true # optional (3.21+)
 
 # runner
 RUN addgroup runner
