@@ -3,20 +3,15 @@ ARG BASE=alpine:latest
 FROM ${BASE}
 
 RUN apk update
-COPY aports /aports
 
 # mono only exists in alpine:edge (3.22+)
 RUN if ! apk add mono; then \
-    apk add --no-cache alpine-sdk abuild sudo && \
-    adduser root abuild && \
-    mkdir -p ~/packages && \
-    abuild-keygen -ain && \
-    cd /aports && \
-    abuild -rF && \
-    apk add --allow-untrusted ~/packages/$(uname -m)/mono-6.14.1-r0.apk && \
-    apk del alpine-sdk abuild && \
-    rm -rf ~/packages ~/.abuild; \
+    sed -i.bak 's|/v3\.[0-9]\+|/edge|g' /etc/apk/repositories && \
+    cat /etc/apk/repositories && \
+    apk update && \
+    apk add --no-cache mono && \
+    mv /etc/apk/repositories.bak /etc/apk/repositories && \
+    apk update; \
   fi
 
-RUN rm -rf /aports
 RUN mono --version
